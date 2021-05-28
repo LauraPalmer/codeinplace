@@ -14,6 +14,7 @@ def open_program():
             current_balance = parent_maintenance(child_name, current_balance)
         else:
             child_maintenance(child_name, current_balance)
+        open_program()
     else:
         child_name, current_balance = initial_setup()
     return child_name, current_balance
@@ -47,10 +48,8 @@ def parent_maintenance(child_name, current_balance):
             deduct_amount = int(input("How much money do you want to deduct?: "))
             current_balance = (current_balance - deduct_amount)
             print(child_name + "'s current balance is $" + str(current_balance))
-            update_balance()
+            current_balance = update_balance(child_name, deduct_amount)
             return current_balance
-        open_program()
-    return child_name, current_balance
 
 def open_csv(file_name):
     with open(file_name, newline='') as f:
