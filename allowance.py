@@ -11,10 +11,9 @@ def open_program():
         print(child_name, current_balance)
         parent_or_child = input("Are you the parent or child? Type P or C: ")
         if parent_or_child == "p" or parent_or_child == "P":
-            current_balance = parent_maintenance(child_name, current_balance)
+            parent_maintenance(child_name, current_balance)
         else:
             child_maintenance(child_name, current_balance)
-        open_program()
     else:
         child_name, current_balance = initial_setup()
     return child_name, current_balance
@@ -38,18 +37,18 @@ def parent_maintenance(child_name, current_balance):
     #This function will be initiated when a parent uses the app and initial setup has already been completed#
     parent_question = input("Do you want to add or deduct money from the account? Type A or D: ")
     if parent_question == "a":
-            add_amount = int(input("How much money do you want to add?: "))
-            current_balance = add_amount + current_balance
-            print(child_name + "'s current balance is $" + str(current_balance))
-            current_balance = update_balance(child_name, add_amount)
-            return current_balance
-    else:
-        if parent_question == "d":
-            deduct_amount = int(input("How much money do you want to deduct?: "))
-            current_balance = (current_balance - deduct_amount)
-            print(child_name + "'s current balance is $" + str(current_balance))
-            current_balance = update_balance(child_name, deduct_amount)
-            return current_balance
+        add_amount = int(input("How much money do you want to add?: "))
+        current_balance = add_amount + current_balance
+        print(child_name + "'s current balance is $" + str(current_balance))
+        update_balance(child_name, add_amount)
+
+    elif parent_question == "d":
+        deduct_amount = int(input("How much money do you want to deduct?: "))
+        current_balance = (current_balance - deduct_amount)
+        print(child_name + "'s current balance is $" + str(current_balance))
+        update_balance(child_name, (0 - deduct_amount))
+
+    parent_maintenance(child_name, current_balance)
 
 def open_csv(file_name):
     with open(file_name, newline='') as f:
@@ -63,18 +62,23 @@ def open_csv(file_name):
         return child_name, current_balance
 
 def child_maintenance(child_name, current_balance):
+
     #This function will be initiated when the child uses the app and initial setup has already been completed#
+
     print("Hi, " + child_name + "!")
     child_question = input("Do you want to check your balance (b) or deduct money (d)?")
+
     if child_question == "b" or child_question == "B":
             print("Your current balance is $" + str(current_balance))
-    else:
-        if child_question == "d" or child_question == "D":
+
+    elif child_question == "d" or child_question == "D":
             deduct_amount = int(input("How much money do you want to deduct?: "))
             current_balance = (current_balance - deduct_amount)
             print("Your current balance is $" + str(current_balance))
-        return current_balance
-    return current_balance
+            update_balance(child_name, (0 - deduct_amount))
+
+    child_maintenance(child_name, current_balance)
+
 
 
 if __name__ == '__main__':
